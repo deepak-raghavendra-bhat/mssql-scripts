@@ -213,7 +213,9 @@ In this section we will learn about SQL basic statements and operator
 
 -- Print the entire data of all the customers.
 
+use market_star_schema;
 
+select * from cust_dimen;
 
 --  List the names of all the customers.
 
@@ -262,13 +264,15 @@ In this section we will learn about SQL basic statements and operator
 -- Aggregate Functions
 
 -- 1. Find the total number of sales made.
-
+select count(Sales) from market_star_schema.market_fact_full;
 -- 2. What are the total numbers of customers from each city?
 
-
+select count(Customer_Name), city from market_star_schema.cust_dimen group by city;
 -- 3. Find the number of orders which have been sold at a loss.
 
-
+select count(profit)
+from market_star_schema.market_fact_full
+where Profit < 0;
 -- 4. Find the total number of customers from Bihar in each segment.
 
 
