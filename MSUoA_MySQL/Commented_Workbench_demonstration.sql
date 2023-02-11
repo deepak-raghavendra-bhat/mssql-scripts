@@ -274,10 +274,16 @@ select count(profit)
 from market_star_schema.market_fact_full
 where Profit < 0;
 -- 4. Find the total number of customers from Bihar in each segment.
-
+select count(Customer_Name), Customer_Segment
+from market_star_schema.cust_dimen
+where State = 'Bihar'
+group by Customer_Segment;
 
 -- 5. Find the customers who incurred a shipping cost of more than 50.
-
+select cust_id, sum(Shipping_Cost) as cust_sc
+from market_star_schema.market_fact_full
+group by cust_id
+having cust_sc > 50;
      
      
      /*
@@ -288,19 +294,31 @@ where Profit < 0;
      
      
 --  List the customer names in alphabetical order.
-
-
+select * 
+from market_star_schema.cust_dimen
+order by Customer_Name asc;
 -- Print the three most ordered products.
-
+select prod_id, sum(Order_Quantity)
+from market_star_schema.market_fact_full
+group by prod_id
+order by sum(Order_Quantity) desc limit 3;
 
 --  Print the three least ordered products.
-
+select prod_id, sum(Order_Quantity)
+from market_star_schema.market_fact_full
+group by prod_id
+order by sum(Order_Quantity) asc limit 3;
 
 --  Arrange the order ids in the order of their recency.
-
+select *
+from market_star_schema.orders_dimen
+order by Order_Date desc;
 
 --  Arrange all consumers from Coimbatore in alphabetical order.
-
+select *
+from market_star_schema.cust_dimen
+where city = 'Coimbatore'
+order by Customer_Name asc;
      
 /*
 
@@ -310,7 +328,7 @@ where Profit < 0;
 
 -- Print the customer names in proper case.
 
-substring ( 'string' , index , lengthOfthesubstring )
+-- substring ( 'string' , index , lengthOfthesubstring )
 
 -- "abcdef".  substring('abcde' , 2 ,  3 ) = 'bcd'
 
@@ -322,13 +340,25 @@ from cust_dimen;
 
 
 -- Print the product names in the following format: Category_Subcategory.
-
+select product_category, product_sub_category, 
+concat(product_category,'_',product_sub_category) as Category_Subcategory
+from market_star_schema.prod_dimen;
 
 -- In which month were the most orders shipped?
-
+select count(ship_id) as ship_count, month(ship_date) as ship_month
+from market_star_schema.shipping_dimen
+group by ship_month
+order by ship_count desc limit 1;
 
 -- Which month and year combination saw the most number of critical orders?
 
+
+select count(Ord_id) as Order_Count, month(Order_Date) as Order_Month, year(Order_Date) as Order_Year
+from orders_dimen
+where Order_Priority = 'Critical'
+group by Order_Month, Order_Year
+order by Order_Count desc
+limit 2;
 
 -- Find the most commonly used mode of shipment in 2011.
 
