@@ -77,4 +77,16 @@ show tables;
 
 desc item;
 
+create table test (
+id int,
+name varchar(20)
+);
+
+describe test;
+
+desc test;
+
+drop table if exists test;
+
+select now();
 
