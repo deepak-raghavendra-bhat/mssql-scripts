@@ -362,7 +362,10 @@ limit 2;
 
 -- Find the most commonly used mode of shipment in 2011.
 
-
+select *
+from shipping_dimen
+order by ship_mode
+limit 100;
 
 /*
 In this section we will be covering the different types of nested queries.
