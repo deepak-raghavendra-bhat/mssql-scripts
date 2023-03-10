@@ -66,3 +66,9 @@ alter table pets change `animal_type` `species` varchar(20);
 alter table pets modify species varchar(30);
 
 describe pets;
+
+describe orders;
+
+alter table orders
+add constraint orders_ibfk_1
+foreign key (product_id) references products(id);
